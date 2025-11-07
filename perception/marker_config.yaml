@@ -1,0 +1,21 @@
+# Camera intrinsics (placeholder; update after calibration)
+fx: 620.0
+fy: 620.0
+cx: 320.0
+cy: 240.0
+
+# Marker 
+marker_size_m: 0.06
+
+# Adaptive HSV 
+h_lo: 135           # lower hue bound
+h_hi: 165           # upper hue bound
+s_p_low: 15         # S lower percentile (adapt per frame)
+v_p_low: 10         # V lower percentile
+v_p_high: 99        # V upper percentile
+
+# Blob gating
+min_area: 80        # px^2 — tune after first run
+
+# Pixel noise used to compute variances later
+pix_noise: 1.5
