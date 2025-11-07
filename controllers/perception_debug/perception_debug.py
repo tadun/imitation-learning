@@ -11,6 +11,15 @@ import cv2
 import numpy as np
 from controller import Robot, Camera
 
+import sys
+from pathlib import Path
+HERE = Path(__file__).resolve()
+REPO_ROOT = HERE.parents[2]  # .../imitation-learning
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+print(f"[perception_debug] REPO_ROOT={REPO_ROOT}") 
+
 from perception.detector import MarkerDetector
 from perception.measurement import MeasurementModel
 from perception.viz import draw_overlay
