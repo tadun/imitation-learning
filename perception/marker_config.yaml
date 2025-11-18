@@ -1,13 +1,19 @@
-# HSV seed for your marker; adapt at runtime.
-h_lo: 0
-h_hi: 10
-v_p_low: 10     # percentile for V lower bound
-v_p_high: 99    # percentile for V upper bound
-s_p_low: 10     # percentile for S lower bound
-min_area: 80    # px^2 – adjust after first frames
-fx: 620.0       # intrinsics (example values; tune later)
+# Camera intrinsics (approx; OK for sim)
+fx: 620.0
 fy: 620.0
 cx: 320.0
 cy: 240.0
-marker_size_m: 0.06
+
+# Physical
+marker_size_m: 0.08
+
+# HSV thresholds (OpenCV hue 0–179); magenta band
+h_lo: 135
+h_hi: 165
+s_p_low: 25
+v_p_low: 10
+v_p_high: 99
+
+# Detection gates
+min_area: 60
 pix_noise: 1.5
