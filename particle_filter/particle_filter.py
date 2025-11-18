@@ -1,7 +1,6 @@
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-# we need this to create a multivariate normal distribution
 from scipy.stats import multivariate_normal
 
 def systematicResampling(weightArray):
@@ -26,6 +25,7 @@ def systematicResampling(weightArray):
             s=s+1
             
         resampledIndex.append(s)
+        print("Resampled index:", s)
 
     return resampledIndex
 
@@ -180,49 +180,3 @@ errorSequenceNorm=np.zeros(shape=(1,numberIterations))
 for i in range(numberIterations):
     errorSequence[:,[i]]=meanStateSequence[:,[i]]-stateTrajectory[:,[i]]
     errorSequenceNorm[:,i]=np.linalg.norm(errorSequence[:,i], 2)
-
-# plot the true and mean state trajectory
-# state x1
-plt.figure(figsize=(10,8))
-plt.plot(meanStateSequence[0,0:100], color='red',linewidth=4, label='Mean estimated state (x1)')
-plt.plot(stateTrajectory[0,0:100],color='blue',linewidth=4, label='True state (x1)')
-plt.title("True and estimated states", fontsize=14)
-plt.xlabel("time", fontsize=14)
-plt.ylabel("State",fontsize=14)
-plt.tick_params(axis='both',which='major',labelsize=14)
-plt.grid(visible=True)
-plt.legend(fontsize=14)
-plt.savefig("particle_filter/stateX1.png",dpi=600)
-plt.show()
-
-# plot the true and mean state trajectory
-# state x2
-plt.figure(figsize=(10,8))
-plt.plot(meanStateSequence[1,0:100], color='red',linewidth=4, label='Mean estimated state (x2)')
-plt.plot(stateTrajectory[1,0:100],color='blue',linewidth=4, label='True state (x2)')
-plt.title("True and estimated states", fontsize=14)
-plt.xlabel("time", fontsize=14)
-plt.ylabel("State",fontsize=14)
-plt.tick_params(axis='both',which='major',labelsize=14)
-plt.grid(visible=True)
-plt.legend(fontsize=14)
-plt.savefig("particle_filter/stateX2.png",dpi=600)
-plt.show()
-
-# use this to generate a series of PNG images for creating the animation
-for i in range(numberIterations):
-    print(i)
-    plt.figure(figsize=(8,8))
-    plt.scatter(stateList[i][0,:], stateList[i][1,:], s=50000*weightList[i][0,:],label='Particles', 
-                c=weightList[i][0,:], cmap='viridis', alpha =0.4)
-    plt.scatter(stateTrajectory[0,i], stateTrajectory[1,i], s=300,c='r', marker='o',label='Exact State' )
-    plt.xlim((-0.5,1.5))
-    plt.ylim((-2,2))
-    plt.xlabel('x1', fontsize=14)
-    plt.ylabel('x2',fontsize=14)
-    plt.tick_params(axis='both',which='major',labelsize=14)
-    plt.legend()
-    filename='particle_filter/particles'+str(i).zfill(4)+'.png'
-    #time.sleep(0.1)
-    plt.savefig(filename,dpi=300)
-    #plt.show()
