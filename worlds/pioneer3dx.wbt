@@ -5,6 +5,7 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/project
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
 EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/microsoft/protos/Kinect.proto"
 
 WorldInfo {
   info [
@@ -17,8 +18,8 @@ WorldInfo {
 }
 Viewpoint {
   fieldOfView 0.660595
-  orientation -0.35886046217615875 0.13115714779090948 0.9241303865094294 2.490154059894204
-  position 8.410771334413992 -7.484186850453515 9.96747285872257
+  orientation 0.1819793312823289 -0.13748113752052318 -0.9736439081163603 4.409974476892734
+  position 4.812869782195223 -14.283241583374162 5.86387759892396
   follow "Pioneer 3-DX"
 }
 TexturedBackground {
@@ -48,6 +49,36 @@ CardboardBox {
   size 0.3 0.6 0.3
 }
 DEF PIONEER_3DX Pioneer3dx {
-  translation -0.238227 0.815367 0.0975
-  rotation 0 0 1 -1.8325953071795862
+  hidden position_0_0 -9.129432854138031e-08
+  hidden position_0_1 -2.742417279241612e-12
+  hidden position_0_2 -2.7418067816142866e-12
+  hidden translation_1 -0.19179938859819712 7.073226448994769e-10 1.6182591440344625e-05
+  hidden rotation_1 0.5778106526900841 -0.5771198869647101 -0.5771199924692434 2.093704404505385
+  hidden position_1_0 2.1920664883629308e-07
+  hidden rotation_2 1 0 0 2.1900144899933154e-07
+  hidden translation_4 6.90906972361294e-07 0.16499999981601787 1.829840355954871e-05
+  hidden translation_9 6.917740692000799e-07 -0.1650000005231254 1.8298388739819936e-05
+  hidden rotation_9 0.5773502692488652 -0.5773502692802086 -0.5773502690398037 2.09439500017399
+  translation -0.23722137205251687 0.8200578754019676 0.0968203342501096
+  rotation -0.018877340293059264 -0.01446601382992844 -0.9997171502316705 1.8341418163131868
+  controller "perception_debug"
+  extensionSlot [
+    Kinect {
+    }
+    Solid {
+      translation 0.134968 -0.005 0.0399841
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 1
+          }
+          geometry Box {
+            size 0.08 0.08 0.002
+          }
+        }
+      ]
+      name "marker"
+    }
+  ]
 }
