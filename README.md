@@ -5,4 +5,4 @@ Built for Webots 2025a on bot MacOS and Windows.
 
 Particle Filter Implementation: https://aleksandarhaber.com/clear-and-concise-particle-filter-tutorial-with-python-implementation-part-3-python-implementation-of-particle-filter-algorithm/
 
-DEF PIONEER_3DX_TEACHER Pioneer3dx/supervisor TRUE
+DEF PIONEER_3DX_STUDENT Pioneer3dx/supervisor TRUE
