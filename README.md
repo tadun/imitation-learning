@@ -5,4 +5,6 @@ Built for Webots 2025a on bot MacOS and Windows.
 
 Particle Filter Implementation: https://aleksandarhaber.com/clear-and-concise-particle-filter-tutorial-with-python-implementation-part-3-python-implementation-of-particle-filter-algorithm/
 
+Pure Pursuit: https://learnbydoing.dev/pure-pursuit-controller/
+
 DEF PIONEER_3DX_STUDENT Pioneer3dx/supervisor TRUE
