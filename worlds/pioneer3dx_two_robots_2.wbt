@@ -1,0 +1,131 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/microsoft/protos/Kinect.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/lights/protos/FloorLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/WoodenBox.proto"
+
+WorldInfo {
+  info [
+    "Pioneer 3DX robot (Adept Mobile Robots)"
+    "This two-wheel two-motor, differential wheel robot is equipped with a Microsoft kinect"
+    "It is programmed to perform a simple obstacle avoidance behavior based on sensed values situated on a medium-height line of the kinect display"
+  ]
+  title "Pioneer 3DX equipped with a Microsoft kinect"
+}
+Viewpoint {
+  fieldOfView 0.660595
+  orientation 0.29363725333321283 0.7992010756699954 -0.5244566751437613 1.222194080445995
+  position -11.55546745058497 7.491633045041496 15.410212208313396
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 8 8
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+  wallHeight 0.4
+}
+DEF PIONEER_3DX_TEACHER Pioneer3dx {
+  hidden position_0_0 -25.132610044125737
+  hidden position_0_1 12920.843452300796
+  hidden position_0_2 11161.894910223582
+  hidden linearVelocity_0 0.5061671144811698 -0.06943418473805017 6.419468952888925e-07
+  hidden angularVelocity_0 8.506133028312303e-06 4.010818911746504e-05 -8.815752199807223e-05
+  hidden rotation_1 0.5774007621643068 -0.577325021048476 -0.5773250210439993 2.094319262196188
+  hidden position_1_0 -28523.161555066494
+  hidden linearVelocity_1 0.5061672271981243 -0.0694174576599621 6.927548021268991e-06
+  hidden angularVelocity_1 1.230073719071803e-05 3.9171404463480064e-05 -8.839726335032477e-05
+  hidden rotation_2 1 0 0 2.499739528828858
+  hidden linearVelocity_2 0.5061687214362289 -0.06941253106260711 7.467249019961777e-06
+  hidden angularVelocity_2 1.8504788481230154 13.497904074153134 -0.0013010880010254841
+  hidden rotation_4 -0.44611731463989296 0.44611738687920854 -0.7758599220881031 1.8218984569880117
+  hidden linearVelocity_4 0.506173544209028 -0.06945180814799723 -1.194044828882367e-06
+  hidden angularVelocity_4 0.712322766971161 5.191401450277586 -0.00014517481814533225
+  hidden rotation_9 -0.5385968383994723 0.53859690854369 -0.6479404415324549 1.991740617499721
+  hidden linearVelocity_9 0.5061522972573912 -0.0694291732782193 -1.26145639132334e-06
+  hidden angularVelocity_9 0.7122982490477695 5.1914001541501245 -0.00014563639929729015
+  hidden position_28_0 -9.288059740590604e-09
+  hidden rotation_29 0.5773835978640753 -0.5772836007044692 -0.5773836032268487 2.094399994638148
+  hidden linearVelocity_29 0.5061713398717614 -0.06944020351507514 -2.5608351472841493e-06
+  hidden angularVelocity_29 8.506132158263961e-06 4.01081889671072e-05 -8.815749892567785e-05
+  translation 0.5369936496834169 3.396592208612666 0.09461960485438756
+  rotation 0.016417537244681136 0.2396444578603078 0.9707218954405317 -0.14045746264226455
+  name "Pioneer 3-DX(1)"
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+  ]
+}
+DEF PIONEER_3DX_STUDENT Pioneer3dx {
+  hidden position_0_0 -3.9491920568359804
+  hidden position_0_1 11342.2512772371
+  hidden position_0_2 12831.864362251867
+  hidden linearVelocity_0 7.633075268316148e-05 -0.0002466648584951884 1.9037256941521895e-06
+  hidden angularVelocity_0 2.9735641960920328e-05 -0.00029873390665880763 -0.0012716954815888955
+  hidden rotation_1 -0.8697194214002034 -0.34899002690085634 -0.3489900989469971 4.573255471193538
+  hidden position_1_0 -19697.4929048471
+  hidden linearVelocity_1 0.00019291709203710016 -0.00035981583209831997 3.54610167575213e-05
+  hidden angularVelocity_1 -0.0005425912955681175 -0.0004495912186616581 -0.01015617784433879
+  hidden rotation_2 -0.9999999999999999 0 0 5.990152146274525
+  hidden linearVelocity_2 0.00023314976210328528 -0.00026443288437308577 2.855193902817101e-05
+  hidden angularVelocity_2 0.0023782425459288902 0.007511904374419152 -0.010479445765368873
+  hidden rotation_4 -0.22632669472586994 0.22632665209881056 0.9473924602846525 4.658373492540128
+  hidden linearVelocity_4 -0.00012612727147533198 -0.0002669841262577848 1.8952777551160894e-06
+  hidden angularVelocity_4 5.398115053578236 -11.05127844364214 -0.1615150471508267
+  hidden rotation_9 -0.014582264498122166 0.014582324464350824 -0.9997873340742637 1.5710089570811294
+  hidden linearVelocity_9 0.0002497017735235278 -8.287578346221713e-05 -3.251962486452291e-05
+  hidden angularVelocity_9 -4.560674371387908 9.336365304705884 0.13394122020948307
+  hidden position_28_0 9.646182986543551e-09
+  hidden rotation_29 0.5773836015084026 -0.5772836043487658 -0.5773835959388557 2.0944000055685676
+  hidden linearVelocity_29 6.514163313573462e-06 -0.00019717929038452487 -1.1353453998630414e-05
+  hidden angularVelocity_29 2.97356364856097e-05 -0.0002987339089766608 -0.0012716954739005009
+  translation 0.659488919843631 -1.8418734502454472 0.09715377554364128
+  rotation 0.034114872180763776 0.0010329989236559265 0.9994173844842374 -2.687076794640635
+  controller "pursuit_controller_2"
+  supervisor TRUE
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+  ]
+}
+CardboardBox {
+  translation -0.36307 2.01063 0.3
+}
+CardboardBox {
+  translation -0.382041 -2.17641 0.3
+  name "cardboard box(1)"
+}
+FloorLight {
+  translation 0.351337 -0.184194 0
+  pointLightCastShadows TRUE
+}
+WoodenBox {
+  translation 3.28359 -3.08068 0.3
+}
+WoodenBox {
+  translation 1.87377 3.11289 0.3
+  name "wooden box(1)"
+}
+WoodenBox {
+  translation 0.188964 -1.55421 0.3
+  name "wooden box(2)"
+}
+WoodenBox {
+  translation -2.77958 3.05296 0.3
+  name "wooden box(3)"
+}
