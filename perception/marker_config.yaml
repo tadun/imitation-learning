@@ -17,3 +17,8 @@ v_p_high: 99
 # Detection gates
 min_area: 60
 pix_noise: 1.5
+
+tracker:
+  alpha: 0.35
+  lose_after: 6
+  reacquire_k: 2.0
