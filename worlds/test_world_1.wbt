@@ -1,0 +1,102 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/microsoft/protos/Kinect.proto"
+
+WorldInfo {
+  info [
+    "Pioneer 3DX robot (Adept Mobile Robots)"
+    "This two-wheel two-motor, differential wheel robot is equipped with a Microsoft kinect"
+    "It is programmed to perform a simple obstacle avoidance behavior based on sensed values situated on a medium-height line of the kinect display"
+  ]
+  title "Pioneer 3DX equipped with a Microsoft kinect"
+}
+Viewpoint {
+  fieldOfView 0.660595
+  orientation -0.09165319417385367 0.9940256412088099 0.05926817541602068 1.1248229828493042
+  position -16.217205344622442 1.124126892274928 24.695066023044944
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 8 8
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+  wallHeight 0.4
+}
+DEF PIONEER_3DX_TEACHER Pioneer3dx {
+  hidden linearVelocity_0 0.38684419020248956 0.03227259324640899 -0.044695326032326205
+  hidden angularVelocity_0 0.07791683384951639 -0.7556992037961493 0.005089805605571818
+  hidden translation_1 -0.1918 0 0
+  hidden rotation_1 0.7500669727410465 -0.46765347855991274 -0.4676534618645475 1.8545046215121594
+  hidden linearVelocity_1 0.4661326816583393 0.04347694126920523 -0.1484603173364233
+  hidden angularVelocity_1 0.07252345403441046 -0.7533009155993297 0.005023819675367358
+  hidden translation_2 0 -0.0521014 0.012843
+  hidden rotation_2 -1 0 0 5.143507189135143
+  hidden linearVelocity_2 0.488369013215737 0.05533149885048039 -0.15473125137090235
+  hidden angularVelocity_2 -4.10192626660024 7.187743288460417 -0.36824349975374987
+  hidden translation_4 0 0.165 0
+  hidden rotation_4 -0.6535437842450212 0.6535438003104199 0.38178661992075036 3.8710072962018462
+  hidden linearVelocity_4 0.4352121542679505 0.03565712225115984 0.0004402719144175858
+  hidden angularVelocity_4 -0.391580891418357 4.463190406584039 -0.026733997971898904
+  hidden translation_9 0 -0.165 0
+  hidden rotation_9 -0.050006735122282764 0.050006679109794734 0.9974961947229773 4.709882100051366
+  hidden linearVelocity_9 0.4350041046270155 0.03916144145419084 -0.002264762967749587
+  hidden angularVelocity_9 -0.3997676117639962 4.462456005926866 -0.006880058470069339
+  hidden translation_29 0 0 0.05
+  hidden rotation_29 0.5773835985945164 -0.5772836014349039 -0.5773836017660994 2.094399996828958
+  hidden linearVelocity_29 0.28419854345996254 0.021558508947445387 -0.0032114752043829534
+  hidden angularVelocity_29 0.07791682904737213 -0.7556991658893433 0.005089661713229665
+  translation -1.5916898113344393 3.48159748850298 0.09469164330157122
+  rotation 0.005129408014836885 -0.3745667364486156 0.927185768397925 0.09691665389394734
+  name "Pioneer 3-DX(1)"
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+  ]
+}
+DEF PIONEER_3DX_STUDENT Pioneer3dx {
+  hidden linearVelocity_0 0.00010348189527239011 -0.00032864525328677325 6.975737804342083e-07
+  hidden angularVelocity_0 -7.506265659250734e-06 -0.00037083920234822084 -0.0016270540022869458
+  hidden translation_1 -0.1918 0 0
+  hidden rotation_1 -0.8945805962803456 -0.3160106893186637 -0.3160107608848853 4.601218441360585
+  hidden linearVelocity_1 0.0002530131567709576 -0.0004806923633312228 4.0062915564958304e-05
+  hidden angularVelocity_1 -0.0007281621306567597 -0.0005614917849424419 -0.013290057655727319
+  hidden translation_2 0 -0.0521014 0.012843
+  hidden rotation_2 -1 0 0 6.078619128664471
+  hidden linearVelocity_2 0.0003168548210350176 -0.00036192947008479253 3.097060536191641e-05
+  hidden angularVelocity_2 0.004814132374666444 0.010969156738380226 -0.013820894382834691
+  hidden translation_4 0 0.165 0
+  hidden rotation_4 0.48800170024385475 -0.4880016863114883 -0.7236772033968256 1.8887113698664482
+  hidden linearVelocity_4 -0.00015655304041038557 -0.00035425103799929754 7.5890157921084645e-06
+  hidden angularVelocity_4 5.261598080664894 -11.117207456553231 -0.14519736865062896
+  hidden translation_9 0 -0.165 0
+  hidden rotation_9 -0.2272341434067877 0.2272342128211994 -0.9469578958927969 1.625269968515432
+  hidden linearVelocity_9 0.0003272894149880124 -0.00012456293515918725 -4.684951074283725e-05
+  hidden angularVelocity_9 -5.261661030152397 11.116484012405166 0.14169225338387148
+  hidden translation_29 0 0 0.05
+  hidden rotation_29 0.5773836014976532 -0.5772836043380166 -0.5773835959603524 2.094400005536327
+  hidden linearVelocity_29 1.6651215161131994e-05 -0.000257983725361175 -1.5007044063928276e-05
+  hidden angularVelocity_29 -7.506025269514636e-06 -0.00037083971017709734 -0.0016270540045675095
+  translation 0.6601072134279462 -1.8436685309124181 0.09698760701006204
+  rotation 0.03268032148527084 0.0012223021528131694 0.9994651082279293 -2.6994396201429285
+  controller "pursuit_controller_2"
+  supervisor TRUE
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+  ]
+}
