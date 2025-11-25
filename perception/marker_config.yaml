@@ -22,3 +22,15 @@ tracker:
   alpha: 0.35
   lose_after: 6
   reacquire_k: 2.0
+
+# perception ablation knobs
+obs_rate_hz: 10            
+features:
+  level: 2  
+
+# PF params  
+pf:
+  N: 500
+  sigma_proc_xy: 0.03
+  sigma_proc_theta: 0.05
+  sigma_bearing: 0.10
