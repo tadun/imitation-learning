@@ -23,3 +23,8 @@ __pycache__/
 *.wbproj.user
 *.wbt.lock
 runtime/
+
+build/
+*.o
+*.d
+*.jpg
