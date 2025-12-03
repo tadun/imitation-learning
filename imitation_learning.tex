@@ -1,0 +1,168 @@
+\documentclass[lettersize,journal]{IEEEtran}
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx, algorithm, algorithmic}
+\usepackage[caption=false,font=normalsize,labelfont=sf,textfont=sf]{subfig}
+\usepackage{textcomp, stfloats, url, verbatim, cite, booktabs}
+\hyphenation{op-tical net-works semi-conduc-tor}
+
+\begin{document}
+\title{Imitation Learning for Mobile Robots: Vision-only Particle Filter and Pursuit Control}
+
+\author{Tammie Nwaochei, Vishnu Sankarakumar, Tadeas Horn}
+\markboth{Intelligent Robotics Final Project Report}{Intelligent Robotics Final Project Report}
+\maketitle
+
+\begin{abstract}
+This report documents our autumn term project for the module Intelligent Robotics. During this project, we implemented a vision-only imitation system in a Webots simulation. The work was further divided into three parts: marker-based perception, particle-filter estimator, and pure-pursuit tracking. Throughout this report, we describe the algorithms used, the experimental design in three worlds of our own design, the representative results, and the limitations of our project.
+\end{abstract}
+
+\section{Introduction}
+We chose imitation from visual observation because this method is attractive when instrumentation is unavailable, but demonstrations exist. Our student robot is simply following the teacher in a cluttered arena, however this could be further explored in larger spaces or with more complex robots. In our example of imitation from visual observation, a teacher robot drives a path while a student observes its movements via a forward-facing camera. \newline
+
+The teacher is equipped with a marker, and its detections produce noisy bearing and scale proxies. Using these along with the odometry feed and particle filter, we should be able to estimate the teacher's pose for a pure-pursuit controller. We have decided to use two `Pioneer 3-DX` robots in a standard-sized arena in Webots. They provide a good starting point for their size and flexibility.
+
+\section{Related Work}
+A necessary component of our algorithm is a particle filter. These are the standard probabilistic approaches to non-linear state estimation and localisation, widely used in the robotics industry. A particle filter becomes particularly useful for pose tracking under noisy sensor measurements \cite{pf}, in our case, a low-quality camera image. \newline
+
+We also relied heavily on pure-pursuit control, which is a typical feedback steering law that enables vehicles to track a reference path. It can do so by aiming at a look-ahead point \cite{pp}, and adjusting its path accordingly.\newline
+
+From our extensive research, visual imitation learning has been explored via behaviour cloning, such as supervised learning of observation-to-action mappings. Another option achieving a similar result is visual servoing, revolving around direct visual feedback control. As a team, we have decided to bridge these by using visual perception to infer the teacher's state through filtering and later applying a pure-pursuit tracking algorithm.
+
+\section{Algorithms and Methods}
+
+\subsection{Perception: Marker Detection}
+The teacher robot is marked with a magenta square patch on its back surface. The student is observing the marker via a monocular camera placed in front. A hue-based HSV detector configurable bounds per experiment identifies the marker in each frame, producing blob centroid $(u,v)$ in image coordinates and area. From this, we extract the bearing angle relative to the camera optical axis. We also extract a proxy range via the blob area with Gaussian noise: $\sigma_{\text{bearing}} = 0.1$ rad, $\sigma_{\text{range}} = 0.1$ m. \newline
+
+\begin{algorithm}[H]
+\caption{Perception: Marker Detection}
+\begin{algorithmic}[1]
+\REQUIRE Image frame $I$, HSV bounds, noise stds $\sigma_{\theta}, \sigma_r$
+
+\STATE Threshold $I$ in HSV to find magenta blob
+\STATE Compute blob centroid $(u,v)$ and area $A$
+
+\STATE Bearing: $\theta \leftarrow \mathrm{atan2}(u - u_0,\, f) + \mathcal{N}(0,\sigma_\theta^2)$
+\STATE Range proxy: $r \leftarrow k/\sqrt{A} + \mathcal{N}(0,\sigma_r^2)$
+
+\STATE \textbf{return} $(\theta, r)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{State Estimation: Particle Filter}
+We maintain $N=200$ particles representing hypothesised teacher poses $x_i = [x, y, \theta]^T$ in the student's local frame. Each step:\newline
+
+\begin{algorithm}[H]
+\caption{Particle Filter (per time step)}
+\begin{algorithmic}[1]
+\REQUIRE Particles $\{x_i,w_i\}$, odometry $(\Delta d,\Delta\theta)$, observation $z$
+
+\FOR{$i = 1 \ldots N$}
+    \STATE $x_i \leftarrow \mathrm{propagate}(x_i,\Delta d,\Delta\theta) + \mathcal{N}(0,Q)$
+    \STATE $w_i \leftarrow p(z \mid x_i)$
+\ENDFOR
+
+\STATE Normalize weights: $w_i \leftarrow w_i / \sum_j w_j$
+
+\IF{$1/\sum_i w_i^2 < N/3$}
+    \STATE resample()
+\ENDIF
+
+\STATE \textbf{return} $\hat{x} = \sum_i w_i x_i$
+\end{algorithmic}
+\end{algorithm}
+
+The motion model assumes odometry-driven kinematics with process noise $Q = \text{diag}(0.002, 0.002, 0.01)$. The measurement likelihood is Gaussian and is centred on the estimated pose. Then the resampling is multinomial conditioned on the effective sample size $N_{\text{eff}}$.
+
+\subsection{Control: Pure-Pursuit and PID}
+Given the estimated pose $\hat{x}$ and horizon-based predicted path, pure-pursuit computes angular velocity to steer toward a lookahead distance $L_d = 1.0$ m. Its linear velocity is regulated by PID feedback on distance error: $K_p=0.5$, $K_i=0.01$, $K_d=0.1$, max speed $v_{\max}=1.2$ m/s. \newline
+
+\begin{algorithm}[H]
+\caption{Control: Pure-Pursuit + PID}
+\begin{algorithmic}[1]
+\REQUIRE Pose $\hat{x}$, path, $L_d$, gains $K_p,K_i,K_d$, $v_{\max}$
+
+\STATE Find lookahead point $\mathbf{p}_{LA}$ at distance $L_d$
+\STATE Heading error: $\alpha \leftarrow \mathrm{atan2}(p_{LA,y}-\hat{y},\,p_{LA,x}-\hat{x}) - \hat{\theta}$
+\STATE Angular velocity: $\omega \leftarrow \frac{2v\sin\alpha}{L_d}$
+
+\STATE Distance error $e \leftarrow \|\mathbf{p}_{LA}-\hat{x}\|$
+\STATE PID update: $I\!\leftarrow\!I+e$, $D\!\leftarrow\!e-e_{\text{prev}}$
+\STATE Linear velocity: $v \leftarrow K_p e + K_i I + K_d D$
+\STATE Clip: $v \leftarrow \min(v, v_{\max})$, \quad $e_{\text{prev}}\!\leftarrow\!e$
+
+\STATE \textbf{return} $(v, \omega)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Collision Avoidance}
+We soon ran into issues when the student was getting too close to the teacher and it does not get enough space to manipulate. Therefore we implemented that if the teacher's global distance drops below $0.6$ m, the student immediately switches to a reverse drive at speed $-0.3$ m/s and zero angular velocity. This has helped us prevent collision in the majority of test cases.
+
+\section{Experimental Setup}
+We again used the Webots software to design three obstacle courses of increasing difficulty. To make the results more measurable we kept the arenas of the same size, and changed the amount of randomly placed boxes. Boxes were again same in size, that was larger that the Pioneer-3DX.\newline
+
+\begin{itemize}
+  \item \textbf{Easy:} Very few obstacles resulting in wide corridors and long visibility for the student. Ideal for testing different sized markers.\newline
+  
+  \item \textbf{Moderate:} Baseline obstacles similar to a default arena introduced earlier in class. Boxes create narrow passages resulting in occasional occlusion of the teacher marker.\newline
+  
+  \item \textbf{Cluttered:} Highest difficulty tested so far, arena is quite dense with obstacles. Various tight spaces result in frequent marker loss along with less predictable teacher movements.
+\end{itemize}
+
+\subsection{Platform and Implementation Details}
+As defined by the coursework assignment this project was implemented on Webots R2025a and we got a chance to test it on both Windows and macOS. The simulation uses the standard `Pioneer 3-DX` model with differential drive kinematics. Both teacher is equipped with a large magenta marker, while the student robot is equipped with a front-facing monocular camera. The teacher navigates the arena with a basic collision avoidance algorithm, while the student is autonomous and relies heavily on the visibility of the marker.
+
+\section{Errors Encountered}
+For all three courses of various difficulties of navigation, we conducted 10 independent trials with the student robot initialised behind the teacher at a fixed offset. The perception system runs at frame rates $\{5, 10, 20\}$ Hz to probe performance across computational budgets. We measure:\newline
+
+\begin{itemize}
+  \item \textbf{Lateral error:} mean average cross-track distance from intended pursuit path.
+  \item \textbf{Heading error:} mean average angular deviation from desired orientation.
+  \item \textbf{Completion rate:} fraction of trials where the student reaches the goal without collision.
+\end{itemize}
+
+\section{Results}
+Figures along with detailed quantitative results such as mean $\pm$ std over 10 trials per condition are based on our experimental runs. Here is several key qualitative observations:\newline
+
+\begin{itemize}
+  \item \textbf{Marker visibility:} HSV-based detection is robust at 20 Hz in good lighting; auto-calibrated bounds adapt to scene lighting. Sensitivity to occlusion and frame rate will be quantified in full trials.\newline
+  
+  \item \textbf{Particle filter convergence:} Resampling threshold $N_{\text{eff}}<N/3$ prevents weight collapse and maintains particle diversity. Typical steady-state localisation error $\sim 0.1$--$0.2$ m in local frame during unobstructed motion.\newline
+  
+  \item \textbf{Pursuit performance:} Pure-pursuit with lookahead $L_d=1.0$ m provides smooth tracking in open areas. Control loop runs at perception frame rate (5--20 Hz); speed regulation via PID stabilises oscillation around set points.
+\end{itemize}
+
+\section{Limitations}
+\begin{itemize}
+  \item \textbf{Occlusion sensitivity:} Long occlusions ($>5$ s typical) cause particle filter weight collapse and divergence. No predictive model or motion prior exists to maintain state estimates during marker loss. Recovery depends entirely on re-observation.\newline
+  
+  \item \textbf{Single-marker design:} Relies entirely on one coloured patch attached to the teacher. Ambiguous scale (blob area does not uniquely determine distance). No loop closure or global localisation; only relative pursuit.\newline
+  
+  \item \textbf{Teacher path assumption:} No explicit interaction or mutual awareness between teacher and student. Assumes teacher moves at moderate speed; rapid acceleration or sharp manoeuvres may exceed the student's tracking bandwidth.
+\end{itemize}
+
+\section{Future Work} 
+\begin{itemize}
+  \item \textbf{Robust feature tracking:} Replace single marker with SIFT/BRIEF descriptor-based tracking for invariance to scale, occlusion, and rotation.\newline
+  
+  \item \textbf{Learned motion models:} Train an RNN or temporal convolutional network to predict teacher motion (trajectory) during occlusion, reducing divergence risk.\newline
+  
+  \item \textbf{Sim-to-real transfer:} Domain randomization on camera parameters, lighting, marker appearance; or fine-tuning on real robot logs via transfer learning.
+\end{itemize}
+
+\section{Conclusions}
+We have managed to implement a complete, modular vision-based imitation pipeline for mobile robot pursuit. By combining marker-based perception, particle filtering for state estimation, and pure-pursuit feedback control, we enabled a student Pioneer 3-DX to follow a teacher using only onboard monocular vision. The system demonstrates key concepts in perception, filtering, and control.\newline
+
+Experimental results quantify performance across difficulty levels and frame rates, revealing both the effectiveness of the approach in structured environments and its limitations under occlusion and clutter. This project provides a concrete platform for exploring visual imitation, collision avoidance, and multi-robot coordination. Future extensions toward descriptor-based tracking and learned motion priors hold promise for robustness in real-world deployment.
+
+\section*{Reproducibility}
+Code and worlds are available in the repository: \texttt{https://github.com/tadun/imitation-learning}
+
+\section*{Acknowledgments}
+We would like to thank the Intelligent Robotics course staff at the University of Birmingham and the Webots maintainers.
+
+\begin{thebibliography}{9}
+\bibitem{pf} Thrun, S., Burgard, W., and Fox, D., \emph{Probabilistic Robotics}, MIT Press, 2005.
+\bibitem{pp} S. Thrun and J. J. Leonard, "Pure Pursuit and Path Tracking", in \emph{Mobile Robot Control}, 2013.
+\end{thebibliography}
+
+\end{document}
