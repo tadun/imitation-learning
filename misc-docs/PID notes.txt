@@ -1,0 +1,30 @@
+PID Controller implementation notes (speed control)
+
+Inputs required:
+- target speed (desired value)
+- current speed (sensor reading)
+- time delta dt (using monotonic clock)
+
+step 1: calculate error
+- difference between current state and target
+error = current_value - target
+
+step 2: calculate the three terms (P, I, D)
+- Proportional (P): scale change of speed to error magnitude
+P = Kp * error
+
+- Integral (I): account for accumulation of error over time (Euler integration)
+integral_sum += error * dt
+I = Ki * integral_sum
+
+- Derivative (D): rate of change of the error (am i under-correcting or over-correcting?)
+D = Kd * [(error - last_error) / dt]
+
+step 3: summation and clamping
+output = P + I + D
+
+- clamp output to within valid speed parameter range (0 to 1.2 m/s)
+
+
+step 4: anti-windup
+- prevent integral term from exploding if desired speed >> max speed possible

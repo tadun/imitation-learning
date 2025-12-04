@@ -1,0 +1,26 @@
+Pure Pursuit implementation notes
+
+inputs required:
+- velocity v (from PID speed controller)
+- path points list (list of predicted teacher (x, y) coordinates)
+
+Constant:
+- look-ahead distance (how far ahead is the robot aiming to join the teacher's path?)
+
+step 1: find goal point
+- goal point is the point on predicted teacher path that is closest to L_d distance away from student
+- iterate through teacher path points list of (x, y) coordinates
+- calculate distance to point: dist = sqrt(x^2 + y^2)
+- calculate difference: diff = abs(dist - L_d)
+- find and return (x, y) with smallest above difference in teacher path points list using this method
+
+step 2: calculate angular velocity (formula taken from Pure Pursuit Paper)
+- calculate curvature (kappa) needed to reach the target point
+    - kappa = (2 * y_point) / (L_d^2)
+    - y_point is the lateral deviation (left/right distance) from the goal point
+
+- calculate desired angular velocity
+    - w scales with linear velocity v
+    - w = v * curvature
+
+- return w
