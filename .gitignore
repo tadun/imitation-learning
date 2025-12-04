@@ -1,0 +1,30 @@
+# Ignore all executables
+*.exe
+
+# Ignore C/C++ build artifacts
+*.o
+*.so
+*.dll
+*.ilk
+*.pdb
+*.d
+
+# Ignore common build folders
+build/
+bin/
+obj/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Webots-specific files
+*.wbproj
+*.wbproj.user
+*.wbt.lock
+runtime/
+
+build/
+*.o
+*.d
+*.jpg
