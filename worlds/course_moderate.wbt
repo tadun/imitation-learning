@@ -1,0 +1,96 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/microsoft/protos/Kinect.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/CardboardBox.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/factory/containers/protos/WoodenBox.proto"
+
+WorldInfo {
+  info [
+    "Moderate Course: Balanced obstacle density"
+    "Two Pioneer 3DX robots with Kinect sensors"
+  ]
+  title "Moderate Course - Standard Obstacles"
+}
+Viewpoint {
+  fieldOfView 0.660595
+  orientation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0944
+  position 0.0012339192717912661 3.2360014025536316e-06 21.109420255681762
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 8 8
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+  wallHeight 0.4
+}
+DEF PIONEER_3DX_TEACHER Pioneer3dx {
+  translation 0 0.5 0.09
+  rotation 0 0 1 1.8326
+  name "Pioneer 3-DX(1)"
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+    Solid {
+      translation -0.265184 -0.005 0.229665
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 1
+          }
+          geometry Box {
+            size 0.5 0.5 0.002
+          }
+        }
+      ]
+      name "marker"
+    }
+  ]
+}
+DEF PIONEER_3DX_STUDENT Pioneer3dx {
+  translation 0 -1 0.09
+  rotation 0 0 1 2.0944
+  controller "pursuit_controller"
+  supervisor TRUE
+  extensionSlot [
+    Camera {
+      translation 0.17 0 0.15
+      width 640
+      height 480
+    }
+  ]
+}
+CardboardBox {
+  translation 1.5 -1.5 0.3
+}
+CardboardBox {
+  translation -1.8 -1.2 0.3
+  name "cardboard box(1)"
+}
+WoodenBox {
+  translation 1.2 2 0.3
+}
+WoodenBox {
+  translation -2.5 2.5 0.3
+  name "wooden box(1)"
+}
+WoodenBox {
+  translation -0.5 -3.5 0.3
+  name "wooden box(2)"
+}
+WoodenBox {
+  translation 2.5 0 0.3
+  name "wooden box(3)"
+}

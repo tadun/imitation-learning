@@ -1,0 +1,109 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/adept/pioneer3/protos/Pioneer3dx.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/devices/microsoft/protos/Kinect.proto"
+
+WorldInfo {
+  info [
+    "Moderate Course: Balanced obstacle density"
+    "Two Pioneer 3DX robots with Kinect sensors"
+  ]
+  title "Moderate Course - Standard Obstacles"
+}
+Viewpoint {
+  fieldOfView 0.660595
+  orientation -0.5773502691896258 0.5773502691896258 0.5773502691896258 2.0944
+  position 0.001233919271789045 3.236001397043945e-06 28.449292032715775
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 8 8
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+  wallHeight 0.4
+}
+DEF PIONEER_3DX_TEACHER Pioneer3dx {
+  translation -2.96061 3.40764 0.0448956
+  rotation -0.018162100445311545 -0.0002487190060982729 0.99983502451468 -3.051735307179586
+  name "Pioneer 3-DX(1)"
+  extensionSlot [
+    Kinect {
+      translation 0 0 0.15
+      width 150
+      height 100
+    }
+    Solid {
+      translation -0.265184 -0.005 0.229665
+      rotation 0 1 0 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 1
+          }
+          geometry Box {
+            size 0.5 0.5 0.002
+          }
+        }
+      ]
+      name "marker"
+    }
+  ]
+}
+DEF PIONEER_3DX_STUDENT Pioneer3dx {
+  translation -2.28006 3.56779 0.097404
+  rotation 0 0 1 -3.063135307179586
+  controller "pursuit_controller"
+  supervisor TRUE
+  extensionSlot [
+    Camera {
+      translation 0.17 0 0.15
+      width 640
+      height 480
+    }
+  ]
+}
+Wall {
+  translation 0 -0.97 0
+  size 0.2 6 0.6
+}
+Wall {
+  translation 1.24 0.92 0
+  name "wall(1)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation -1.34 0.1 0
+  name "wall(5)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation -2.52 0.1 0
+  name "wall(6)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation 2.81 -0.16 0
+  name "wall(4)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation 1.44 -3.11 0
+  rotation 0 0 1 1.5708
+  name "wall(2)"
+  size 0.2 3 0.6
+}
+Wall {
+  translation -0.64 3.06 0
+  rotation 0 0 1 1.5708
+  name "wall(3)"
+  size 0.2 4 0.6
+}
