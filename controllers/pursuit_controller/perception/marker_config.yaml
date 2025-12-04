@@ -1,0 +1,33 @@
+# camera settings - note - has to match webots tree settings
+fx: 620.0
+fy: 620.0
+cx: 320.0
+cy: 240.0
+
+# actual marker size
+marker_size_m: 0.5 
+
+#hue settings for magenta marker (specifying accepted colour range)
+h_lo: 120
+h_hi: 170
+
+#saturation setting - need to ignore low values (greys), accept bright colours only
+s_p_low: 50 
+
+#value setting (basically brightness)
+v_p_low: 50 #high enough to ignore dark shadows/tyres
+v_p_high: 255 #allow max brightness
+
+min_area: 100 #marker is huge, ignore noise (blobs smaller than 100px)
+pix_noise: 5.0 #allowed noise/jitter threshold
+
+tracker:
+  alpha: 0.5  #reactivity to movement
+  lose_after: 10 #dropped frames buffer - how soon to decide teacher is truly not visible
+  reacquire_k: 1.5 #confidence in reacquiring teacher - false positives threshold
+
+obs_rate_hz: 20 #essentially frames processed per second
+features:
+  level: 2 #this is purely for testing - how much does the inclusion of range data improve performance?
+           #level = 1 is the bearing-only reactive baseline specified in proposal
+           #particle filter gets angle updates only, no distance update
