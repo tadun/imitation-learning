@@ -1,0 +1,67 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/appearances/protos/Parquetry.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/apartment_structure/protos/Wall.proto"
+
+WorldInfo {
+  info [
+    "Moderate Course: Balanced obstacle density"
+    "Two Pioneer 3DX robots with Kinect sensors"
+  ]
+  title "Moderate Course - Standard Obstacles"
+}
+Viewpoint {
+  fieldOfView 0.660595
+  orientation 0.5497218557653495 -0.4945365257390327 -0.6732306484436575 4.235342740315152
+  position 0.7963445847159938 -4.275088206069977 28.113920203221245
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 8 8
+  floorTileSize 1 1
+  floorAppearance Parquetry {
+  }
+  wallHeight 0.4
+}
+Wall {
+  translation 0 -0.97 0
+  size 0.2 6 0.6
+}
+Wall {
+  translation 1.24 0.92 0
+  name "wall(1)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation -1.34 0.1 0
+  name "wall(5)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation -2.52 0.1 0
+  name "wall(6)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation 2.81 -0.16 0
+  name "wall(4)"
+  size 0.2 6 0.6
+}
+Wall {
+  translation 1.44 -3.11 0
+  rotation 0 0 1 1.5708
+  name "wall(2)"
+  size 0.2 3 0.6
+}
+Wall {
+  translation -0.64 3.06 0
+  rotation 0 0 1 1.5708
+  name "wall(3)"
+  size 0.2 4 0.6
+}
