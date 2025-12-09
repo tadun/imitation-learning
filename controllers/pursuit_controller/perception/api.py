@@ -32,14 +32,39 @@ class PerceptionAPI:
             reacquire_k=float(tcfg.get("reacquire_k", 2.0)),
         )
 
+        # new state for rate enforcement
+        self.obs_rate_hz = float(self.cfg.get("obs_rate_hz", 20.0))
+        # time interval required between processing steps
+        self.dt_required = 1.0 / self.obs_rate_hz if self.obs_rate_hz > 0 else 0.0 
+        self.last_processed_t = 0.0
+
     def process(self, t: float, bgr) -> PerceptionObs:
-        #locate purple box
+        
+        #rate enforcement check
+        if self.dt_required > 0.0 and t < self.last_processed_t + self.dt_required:
+            #not enough time passed, return last smoothed state
+            s = self.trk.state            
+            
+            return PerceptionObs(
+                t=t,
+                bearing_rad=s.bearing if s.bearing is not None else 0.0, 
+                range_m=s.range_m,
+                bearing_var=1e3, # high variance for stale data
+                range_var=1e3,
+                visible=s.visible
+            )
+        
+        #locate magenta box
         blob = self.det.detect(bgr)
         #convert pixels to bearing + range
         obs = self.meas.from_blob(t, blob.u, blob.v, blob.area, blob.visible)
         #smooth vals
         st  = self.trk.update(obs)
-        #return final obs, prefer smoothed vals        
+        
+        #update last processed time
+        self.last_processed_t = t
+        
+        #return final obs, prefer smoothed vals        
         return PerceptionObs(
             t=obs.t,
             bearing_rad=st.bearing if st.bearing is not None else obs.bearing_rad,
