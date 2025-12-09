@@ -4,6 +4,7 @@ We aim to enable a student Pioneer 3-DX robot to imitate the motion of a teacher
 Built for Webots 2025a on bot MacOS and Windows.
 
 All development is done independently by hand with the exceptions mentioned below.
+
 Pre-programmed support used in: CSV data logging (testing_analysis), Particle filter and camera mask visualizers.
 
 Notes:
