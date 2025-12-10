@@ -7,14 +7,20 @@ from visualizer import PFVisualizer
 from perception.api import PerceptionAPI
 import math
 import numpy as np
+import csv
 
 #constants
 TEACHER_DEF_NAME = "PIONEER_3DX_TEACHER" 
 HORIZON_STEPS = 40       
-TARGET_DISTANCE = 0.3    
-LOOKAHEAD_DISTANCE = 1.0 
+TARGET_DISTANCE = 0.5    
+LOOKAHEAD_DISTANCE = 0.8 
 VMAX = 1.2
 PLOT_INTERVAL = 10 
+
+#prepare csv to store test log
+with open("test_log.csv", 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerow(['time', 's_x', 's_y', 's_yaw', 't_x', 't_y', 't_yaw', 'v_cmd', 'w_cmd', 'pf_x', 'pf_y'])
 
 #normalise angle to range (-pi,pi)
 def normalise_angle(angle):
@@ -90,25 +96,24 @@ while robot.step(timestep) != -1:
     obs = None
     
     #get camera img
-    raw_img = controller.camera.getImage()
+    raw_img = controller.camera.getImage()    
     
-    if raw_img:
-        np_img = np.frombuffer(raw_img, np.uint8).reshape((controller.camera.getHeight(), controller.camera.getWidth(), 4))
-        bgr_img = np_img[:, :, :3] 
-        #pass img to perception stack to find teeacher
-        sim_time = robot.getTime()
-        obs = perception_stack.process(sim_time, bgr_img)
+    np_img = np.frombuffer(raw_img, np.uint8).reshape((controller.camera.getHeight(), controller.camera.getWidth(), 4))
+    bgr_img = np_img[:, :, :3] 
+    #pass img to perception stack to find teeacher
+    sim_time = robot.getTime()
+    obs = perception_stack.process(sim_time, bgr_img)
+    
+    #if teacher marker found then convert to x, y coords (standard coord transformation)
+    if obs.visible and obs.range_m is not None:
+        b_rad = -obs.bearing_rad
+        r_m = obs.range_m
         
-        #if teacher marker found then convert to x, y coords (standard coord transformation)
-        if obs.visible and obs.range_m is not None:
-            b_rad = -obs.bearing_rad
-            r_m = obs.range_m
-            
-            #store where teacher last seen for recovery
-            last_valid_bearing = b_rad 
+        #store where teacher last seen for recovery
+        last_valid_bearing = b_rad 
 
-            measured_x = r_m * math.cos(b_rad)
-            measured_y = r_m * math.sin(b_rad)
+        measured_x = r_m * math.cos(b_rad)
+        measured_y = r_m * math.sin(b_rad)
 
     #feed all current data into PF
     est_x, est_y, est_theta, current_path = pf_estimator.update_state(
@@ -133,11 +138,12 @@ while robot.step(timestep) != -1:
 
     #is teacher marker visible right now
     is_visible = (obs is not None) and obs.visible and (obs.range_m is not None)
+    current_sim_time = robot.getTime()
 
     if is_visible:
         #normal teacher follow mode - it is visible
         current_distance = math.sqrt(est_x**2 + est_y**2)
-        v_desired = pid_speed.update(current_distance)
+        v_desired = pid_speed.update(current_distance, current_sim_time)
         w_desired = calculate_steering(abs(v_desired), current_path, LOOKAHEAD_DISTANCE)
     else:
         #recovery mode - time to sweep until found again
@@ -154,6 +160,31 @@ while robot.step(timestep) != -1:
         else:
             #moving too fast to spin -continu slowing down
             w_desired = 0.0
+            
+    #get teacher ground truth for evaluation only (not for control)
+    teacher_pos_global = teacher_node.getPosition()
+    teacher_orn_global = teacher_node.getOrientation()
+    teacher_yaw_global = math.atan2(teacher_orn_global[3], teacher_orn_global[0])
+    
+    #create row of data
+    log_row = [
+        robot.getTime(),
+        current_student_pose[0],
+        current_student_pose[1],
+        current_student_pose[2],
+        teacher_pos_global[0],
+        teacher_pos_global[1],
+        teacher_yaw_global,
+        v_desired,  # control effort: linear speed
+        w_desired,  # control effort: angular speed
+        est_x,      # pf estimate for debug
+        est_y,
+    ]
+
+    # append to log file
+    with open("test_log.csv", 'a', newline='') as f:
+        writer = csv.writer(f)
+        writer.writerow(log_row)
 
     #send final speeds to motors and save pose for next step
     last_cmd_v = v_desired

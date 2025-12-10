@@ -15,10 +15,9 @@ class PIDController:
         #internal state
         self._integral = 0.0
         self._last_error = 0.0
-        self._last_time = time.monotonic() #monotonic so that e.g. daylight savings does not affect time steps
+        self._last_time = 0.0
 
-    def update(self, current_value):
-        current_time = time.monotonic()
+    def update(self, current_value, current_time):
         dt = current_time - self._last_time
         
         #avoid division by zero on first run

@@ -25,7 +25,7 @@ class PFVisualizer:
         self.estimate_plot, = self.ax.plot([], [], 'bo', markersize=8, label='PF estimate')
         
         #student always at 0,0 facing up
-        self.student_plot, = self.ax.plot([0], [0], 'k^', markersize=12, label='Student (You)') 
+        self.student_plot, = self.ax.plot([0], [0], 'k^', markersize=12, label='Student') 
 
         self.ax.legend(loc='upper right')
 
